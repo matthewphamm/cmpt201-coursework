@@ -1,0 +1,98 @@
+/* Pseudocode
+ * Initialize history array of size 5
+ * Initialize count to 0
+ *
+ * Loop indefinitely:
+ *  Print "Enter input: "
+ *  Read line using getline()
+ *
+ *  If history[count % 5] is not NULL then
+ *    Free history[count % 5]
+ *
+ *  Store line in history[count % 5]
+ *  count++
+ *
+ *  If line is "print\n" then
+ *    determine starting point (so maybe 0)
+ *    loop from start to current count:
+ *      print history[i % 5]
+ *
+ * Done
+ */
+
+#define _POSIX_C_SOURCE 200809L
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#define HISTORY_SIZE 5
+
+void addToHistory(char *history[], int *count, char *newLine);
+void printHistory(char *history[], int count);
+void cleanUp(char *history[]);
+
+int main() {
+  char *history[HISTORY_SIZE] = {NULL};
+  int count = 0;
+  char *buffer = NULL;
+  size_t buffsize = 0;
+  ssize_t characters;
+
+  while (1) {
+    printf("Enter input: ");
+    characters = getline(&buffer, &buffsize, stdin);
+
+    if (characters == -1) {
+      perror("getline failed");
+      exit(EXIT_FAILURE);
+    }
+
+    addToHistory(history, &count, buffer);
+
+    int checkPrint = strcmp(
+        buffer, "print\n"); // checks if the user inputs "print" using strcmp
+
+    if (checkPrint == 0) {
+      printHistory(history, count);
+    }
+
+    buffer = NULL;
+    buffsize = 0;
+  }
+
+  cleanUp(history);
+  return 0;
+}
+
+void addToHistory(char *history[], int *count, char *newLine) {
+  int index = *count % HISTORY_SIZE;
+
+  if (history[index] != NULL) {
+    free(history[index]);
+  }
+
+  history[index] = newLine;
+  (*count)++;
+}
+
+void printHistory(char *history[], int count) {
+  int start;
+
+  if (count > HISTORY_SIZE) {
+    start = count - HISTORY_SIZE;
+  } else {
+    start = 0;
+  }
+
+  for (int i = start; i < count; i++) {
+    if (history[i % HISTORY_SIZE] != NULL) {
+      printf("%s", history[i % HISTORY_SIZE]);
+    }
+  }
+}
+
+void cleanUP(char *history[]) {
+  for (int i = 0; i < HISTORY_SIZE; i++) {
+    free(history[i]);
+  }
+}

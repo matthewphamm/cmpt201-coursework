@@ -1,0 +1,22 @@
+#define _POSIX_C_SOURCE 200809L
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+int main() {
+  char *input = NULL;
+  size_t size = 0;
+  ssize_t characters;
+  int i = 0;
+
+  while (i < 3) {
+    printf("Enter input: ");
+    characters = getline(&input, &size, stdin);
+
+    i++;
+
+    free(input);
+    return 0;
+  }
+}
