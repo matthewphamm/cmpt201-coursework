@@ -2,8 +2,8 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <unistd.h>
+#include <string.h>
 #define BUF_SIZE 1024
 
 struct header {
@@ -55,19 +55,14 @@ int main() {
             sizeof(&second_block->size));
   print_out("Second block next: %p\n", &second_block->next,
             sizeof(&second_block->next));
-
+  
   size_t header_size = sizeof(struct header);
   size_t data_size = 128 - header_size;
+  
+  memset(first_block + header_size, 0, data_size);
 
-  memset(first_block + 1, 0, data_size);
-
-  // print_out("Verify first block size after memset: %lu\n",
-  // &first_block->size,
-  //           sizeof(&first_block->size));
-  unsigned char *data_ptr = (unsigned char *)(first_block + 1);
-  for (size_t i = 0; i < data_size; i++) {
-    printf("%x\n", data_ptr[i]);
-  }
+  print_out("Verify first block size after memset: %lu\n", &first_block->size,
+      sizeof(&first_block->size));
 
   return 0;
 }
