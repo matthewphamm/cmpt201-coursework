@@ -44,16 +44,12 @@ int main() {
             sizeof(&first_block->size));
   print_out("First block next: %p\n", &first_block->next,
             sizeof(&first_block->next));
-
+  
   struct header *second_block = (struct header *)(heap_start + 128);
   second_block->size = 128;
   second_block->next = first_block;
 
   print_out("Second block address: %p\n", &second_block, sizeof(&second_block));
-  print_out("Second block size: %lu\n", &second_block->size,
-            sizeof(&second_block->size));
-  print_out("Second block next: %p\n", &second_block->next,
-            sizeof(&second_block->next));
 
   return 0;
 }

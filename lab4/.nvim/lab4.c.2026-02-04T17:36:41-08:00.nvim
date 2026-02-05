@@ -50,10 +50,8 @@ int main() {
   second_block->next = first_block;
 
   print_out("Second block address: %p\n", &second_block, sizeof(&second_block));
-  print_out("Second block size: %lu\n", &second_block->size,
-            sizeof(&second_block->size));
-  print_out("Second block next: %p\n", &second_block->next,
-            sizeof(&second_block->next));
+  print_out("Second block size: %lu\n", &second_block->size, sizeof(&second_block->size));
+  print_out("Second block next: %p\n", &second_block->next, sizeof(&second_block->next));
 
   return 0;
 }
