@@ -1,0 +1,31 @@
+#include <unistd.h>
+#include <stdio.h>
+#include <stdint.h>
+#define _DEFAULT_SOURCE
+
+struct header {
+  uint64_t size;
+  struct header* next;
+};
+
+int main() {
+    // 1. Get the current address of the program break
+    void *initial_break = sbrk(0);
+    printf("Initial program break: %p\n", initial_break);
+
+    // 2. Increase the heap by 1024 bytes
+    // sbrk returns the PREVIOUS break address
+    void *previous_break = sbrk(1024);
+    
+    // 3. Get the new break address
+    void *new_break = sbrk(0);
+
+    printf("Address returned by sbrk(1024): %p\n", previous_break);
+    printf("New program break:             %p\n", new_break);
+
+    // Verify the difference
+    intptr_t diff = (intptr_t)new_break - (intptr_t)initial_break;
+    printf("Memory added: %ld bytes\n", (long)diff);
+
+    return 0;
+}
