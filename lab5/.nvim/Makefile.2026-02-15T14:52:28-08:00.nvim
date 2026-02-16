@@ -1,0 +1,11 @@
+CC = clang
+CFLAGS = -fsanitize=address
+
+lab5: lab5.o
+	$(CC) $(CFLAGS) -o lab5 lab5.o
+
+lab5.o: lab5.c
+	$(CC) $(CFLAGS) -c lab5.c
+
+clean:
+	rm -f *.o lab5
