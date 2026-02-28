@@ -63,11 +63,14 @@ CMakeFiles/example2.dir/example_2.c.o: /home/cmpt201/cmpt201-coursework/lab6/exa
   /usr/lib/llvm-18/lib/clang/18/include/__stddef_size_t.h \
   /usr/lib/llvm-18/lib/clang/18/include/__stddef_wchar_t.h \
   /usr/lib/llvm-18/lib/clang/18/include/stdarg.h \
+  /usr/lib/llvm-18/lib/clang/18/include/stdbool.h \
   /usr/lib/llvm-18/lib/clang/18/include/stddef.h \
   /usr/lib/llvm-18/lib/clang/18/include/stdint.h
 
 
 /usr/lib/llvm-18/lib/clang/18/include/stddef.h:
+
+/usr/lib/llvm-18/lib/clang/18/include/stdbool.h:
 
 /usr/lib/llvm-18/lib/clang/18/include/stdarg.h:
 

@@ -1,7 +1,7 @@
-#include <stdbool.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 #define ASSERT(expr)                                                           \
   {                                                                            \
@@ -32,7 +32,7 @@ typedef struct info {
 
 node_t *head = NULL;
 info_t info = {0};
-
+/*
 void insert_sorted(uint64_t data) {
   node_t *new_node = malloc(sizeof(node_t));
   new_node->data = data;
@@ -55,10 +55,45 @@ void insert_sorted(uint64_t data) {
       prev = curr;
       curr = curr->next;
     }
-    new_node->next = curr;
+
     prev->next = new_node;
+    if (curr != NULL) {
+      new_node->next = curr->next;
+    }
   }
 
+  info.sum += data;
+}
+*/
+
+void insert_sorted(uint64_t data) {
+  node_t *new_node = malloc(sizeof(node_t));
+  new_node->data = data;
+  new_node->next = NULL;
+
+  if (head == NULL || data < head->data) {
+    new_node->next = head;
+    head = new_node;
+    return;
+  } else {
+    node_t *curr = head;
+    node_t *prev = NULL;
+
+    bool inserted = false;
+    while (curr != NULL && !inserted) {
+      if (data < curr->data) {
+        prev->next = new_node;
+        new_node->next = curr;
+        inserted = true;
+      }
+
+      prev = curr;
+      curr = curr->next;
+    }
+    if (!inserted) {
+      prev->next = new_node;
+    }
+  }
   info.sum += data;
 }
 
@@ -86,6 +121,7 @@ int calculate_sum() {
     sum += curr->data;
     curr = curr->next;
   }
+
   return sum;
 }
 
@@ -93,7 +129,7 @@ int main() {
   insert_sorted(1);
   insert_sorted(3);
 
-  ASSERT(info.sum = 1 + 3);
+  ASSERT(info.sum == 1 + 3);
 
   insert_sorted(5);
   insert_sorted(2);
