@@ -47,13 +47,12 @@ void insert_sorted(uint64_t data) {
         prev->next = new_node;
         new_node->next = curr;
         inserted = true;
+      } else {
+        curr->next = new_node;
       }
 
       prev = curr;
       curr = curr->next;
-    }
-    if (!inserted) {
-      prev->next = new_node;
     }
   }
 }
