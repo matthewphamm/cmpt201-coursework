@@ -97,42 +97,37 @@ void groupByKey(IntermediateInput *input, Output *output, int *result_count) {
 
   int input_line_number = 0;
   int input_doubled_value = 0;
-  int current_count = 0;
-  int new_index = 0;
+  int number_of_lines = 0;
 
   input_line_number = input->line_number;
   input_doubled_value = input->doubled_value;
 
+  number_of_lines = output->count;
+
+  // Check if result_count == 0, this means there is nothing in the output array
+  if (*result_count == 0) {
+    output->doubled_value = input_doubled_value;
+    output->line_numbers[number_of_lines] = input_line_number;
+    output->count += 1;
+    *result_count += 1;
+    return;
+  }
+
   // Check for duplicates
   for (int i = 0; i < *result_count; i++) {
     if (output[i].doubled_value == input_doubled_value) {
-      current_count = output[i].count;
-      output[i].line_numbers[current_count] = input_line_number;
-      output[i].count++;
-      return;
+      output->line_numbers[number_of_lines] = input_line_number;
+      output->count += 1;
+    } else {
+      output->doubled_value = input_doubled_value;
+      output->line_numbers[number_of_lines] = input_line_number;
+      output->count += 1;
+      result_count += 1;
     }
   }
-
-  new_index = *result_count;
-  output[new_index].doubled_value = input_doubled_value;
-  output[new_index].line_numbers[0] = input_line_number;
-  output[new_index].count = 1;
-
-  (*result_count)++;
 }
 
 void reduce(Output *output) {
   // TODO:
   // Print the doubled number and line numbers
-
-  printf("(%d, [", output->doubled_value);
-
-  for (int i = 0; i < output->count; i++) {
-    printf("%d", output->line_numbers[i]);
-
-    if (i < output->count - 1) {
-      printf(", ");
-    }
-  }
-  printf("])\n");
 }
