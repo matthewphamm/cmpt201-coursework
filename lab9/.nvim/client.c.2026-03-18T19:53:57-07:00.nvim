@@ -6,15 +6,13 @@ port number).
   - IP address: 127.0.0.1
   - Port number: 8000
 2. Is it UDP or TCP? How do you know?
-  - This is a TCP because at line 38, when declaring the type in socket it is
-SOCK_STREAM. Indicating that it is a TCP.
+  - This is a TCP because at line 38, when declaring the type in socket it is SOCK_STREAM.
+    Indicating that it is a TCP
 3. The client is going to send some data to the server. Where does it get this
 data from? How can you tell in the code?
-  - It gets its data from the read() in STDIN_FILENO at line 58.
+  - It gets its data from the read() in STDIN_FILENO at line 58. 
 4. How does the client program end? How can you tell that in the code?
-  - When the client presses Enter on a blank line at the terminal making
-num_read = 1, closes the socker with close(sfd) and exits cleanly with
-exit(EXIT_SUCCESS).
+  - The client program ends when it calls close(fd), this is called at line 69
 */
 
 #include <arpa/inet.h>

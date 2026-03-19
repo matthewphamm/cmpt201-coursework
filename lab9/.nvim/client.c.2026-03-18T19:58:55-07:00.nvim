@@ -12,9 +12,8 @@ SOCK_STREAM. Indicating that it is a TCP.
 data from? How can you tell in the code?
   - It gets its data from the read() in STDIN_FILENO at line 58.
 4. How does the client program end? How can you tell that in the code?
-  - When the client presses Enter on a blank line at the terminal making
-num_read = 1, closes the socker with close(sfd) and exits cleanly with
-exit(EXIT_SUCCESS).
+  - When the client presses Enter on a blank line at the terminal making num_read = 1, closes the
+  socker with close(sfd) and exits cleanly with exit(EXIT_SUCCESS).
 */
 
 #include <arpa/inet.h>

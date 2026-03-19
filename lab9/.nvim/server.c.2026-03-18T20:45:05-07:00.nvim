@@ -51,8 +51,7 @@ void *handle_client(void *arg) {
   ssize_t num_read;
   int len;
 
-  len = snprintf(out, sizeof(out),
-                 "New client created! ID %d, on socket FD %d\n", id, client_fd);
+  len = snprintf(out, sizeof(out), "New client created! ID %d, on socket FD %d\n", id, client_fd);
   write(STDOUT_FILENO, out, len);
 
   while ((num_read = read(client_fd, buf, BUF_SIZE)) > 0) {
@@ -62,8 +61,8 @@ void *handle_client(void *arg) {
     int msg_num = total_message_count;
     pthread_mutex_unlock(&count_mutex);
 
-    len = snprintf(out, sizeof(out), "MSG # %3d; Client ID %d: %.*s", msg_num,
-                   id, (int)num_read, buf);
+    len = snprintf(out, sizeof(out), "MSG # %3d; Client ID %d: %.*s", msg_num, id, (int)num_read,
+        buf);
     write(STDOUT_FILENO, out, len);
   }
 
