@@ -23,18 +23,6 @@ for enough messages, then joins the acceptor. run_acceptor listens on the server
 socket in a loop; for each incoming connection, it will then spawn a client
 thread. run_client reads from its own socket and appens received messages to the
 shared list.
-
-Part 5: Non-blocking sockets:
-  - How are sockets made non-blocking?
-      set_non_blocking(), which uses fcntl(fd, F_GETFL) to read the current
-flags and fcntl(fd, F_SETFL, flags | O_NONBLOCK) to add O_NONBLOCK.
-  - What sockets are made non-blocking?
-      The server listening socket (sfd) in run_acceptor(), and each accepted
-client socket (cfd) in run_client().
-  - Why are these sockets made non-block? What purpose does it serve?
-      Without O_NONBLOCK, accept() and read() would block indefinitely waiting
-for a connection or data. By making them non-blocking, those calls return
-immediately with EAGAIN/EWOULDBLOCK when nothing is available.
 */
 
 #include <arpa/inet.h>
@@ -222,9 +210,6 @@ static void *run_acceptor(void *args) {
   for (int i = 0; i < num_clients; i++) {
     // TODO: Set flag to stop the client thread
     // TODO: Wait for the client thread and close its socket
-    client_args[i].run = false;
-    pthread_join(threads[i], NULL);
-    close(client_args[i].cfd);
   }
 
   if (close(sfd) == -1) {
