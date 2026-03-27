@@ -5,8 +5,8 @@
 #include <sys/socket.h>
 #include <unistd.h>
 
-#define PORT 8000
-#define BUF_SIZE 64
+#define PORT 8001
+#define BUF_SIZE 1024
 #define ADDR "127.0.0.1"
 
 #define handle_error(msg)                                                      \
@@ -15,17 +15,18 @@
     exit(EXIT_FAILURE);                                                        \
   } while (0)
 
-int main() {
-  struct sockaddr_in addr;
-  int sfd;
-  ssize_t num_read;
-  char buf[BUF_SIZE];
+#define NUM_MSG 5
 
-  sfd = socket(AF_INET, SOCK_STREAM, 0);
+static const char *messages[NUM_MSG] = {"Hello", "Apple", "Car", "Green",
+                                        "Dog"};
+
+int main() {
+  int sfd = socket(AF_INET, SOCK_STREAM, 0);
   if (sfd == -1) {
     handle_error("socket");
   }
 
+  struct sockaddr_in addr;
   memset(&addr, 0, sizeof(struct sockaddr_in));
   addr.sin_family = AF_INET;
   addr.sin_port = htons(PORT);
@@ -33,22 +34,23 @@ int main() {
     handle_error("inet_pton");
   }
 
-  int res = connect(sfd, (struct sockaddr *)&addr, sizeof(struct sockaddr_in));
-  if (res == -1) {
+  if (connect(sfd, (struct sockaddr *)&addr, sizeof(addr)) == -1) {
     handle_error("connect");
   }
 
-  while ((num_read = read(STDIN_FILENO, buf, BUF_SIZE)) > 1) {
-    if (write(sfd, buf, num_read) != num_read) {
+  char buf[BUF_SIZE];
+  for (int i = 0; i < NUM_MSG; i++) {
+    sleep(1);
+    // prepare message
+    // this pads the desination with NULL
+    strncpy(buf, messages[i], BUF_SIZE);
+
+    if (write(sfd, buf, BUF_SIZE) == -1) {
       handle_error("write");
+    } else {
+      printf("Sent: %s\n", messages[i]);
     }
-    printf("Just sent %zd bytes.\n", num_read);
   }
 
-  if (num_read == -1) {
-    handle_error("read");
-  }
-
-  close(sfd);
   exit(EXIT_SUCCESS);
 }
